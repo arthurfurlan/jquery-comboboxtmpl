@@ -49,19 +49,19 @@
 
 	function shiftItemActivity( pluginObj, direction ) {
 		if ( direction === 'next' ) {
-			var selectShift = function ( $activeItem ) { return $activeItem.next(); };
-			var slectorShift = ':first';
+			var selectShift = function ( $activeItem ) { return $activeItem.nextAll( ':visible:first' ); }; //next not work
+			var slectorShift = ':visible:first';
 		} else {
-			var selectShift = function ( $activeItem ) { return $activeItem.prev(); };
-			var slectorShift = ':last';
+			var selectShift = function ( $activeItem ) { return $activeItem.prevAll( ':visible:first' ); };
+			var slectorShift = ':visible:last';
 		}
 
-		$activeItem = pluginObj.jobjects.itemList.children( '.active' );
+		var $activeItem = pluginObj.jobjects.itemList.children( '.active' );
 		if ( $activeItem.length === 0 ) {
 			$activeItem = pluginObj.jobjects.itemList.children( slectorShift );
 		} else {
 			$activeItem.removeClass( 'active' );
-			$shiftItem = selectShift( $activeItem );
+			var $shiftItem = selectShift( $activeItem );
 
 			if ( $shiftItem.length === 0 ) {
 				$activeItem = pluginObj.jobjects.itemList.children( slectorShift );
@@ -124,7 +124,7 @@
 		},
 		activateKeyHandlers: function () {
 			var pluginObj = this;
-			this.jobjects.enteredInput.bind( 'keydown', function ( event ) { pluginObj._keyHook( event );} )
+			this.jobjects.enteredInput.bind( 'keydown', function ( event ) { pluginObj._keyHook( event );} );
 			this.jobjects.enteredInput.bind( 'keypress', function ( event ) {
 				for ( var x in arrKeyCodes ) {
 					if ( arrKeyCodes.hasOwnProperty( x ) && (arrKeyCodes[x] === event.keyCode) ) {
@@ -287,7 +287,7 @@
 			var $valueInput	= $comboBox.find( 'input.jqcmbx-input-name' );
 			$comboBox.append( $itemList );
 
-			$enteredInput.bind( 'keyup', function( event ) { pluginObj._filterList( event ); } )
+			$enteredInput.bind( 'keyup', function( event ) { pluginObj._filterList( event ); } );
 			$items.bind( 'click', function( event ) { pluginObj._itemClick( event ); } );
 			$comboBox.bind( 'click', function( event ) { pluginObj._comboboxClick( event ); } );
 			$select.replaceWith( $comboBox );
