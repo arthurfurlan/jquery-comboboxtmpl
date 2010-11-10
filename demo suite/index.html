@@ -35,35 +35,36 @@ $(function () {
 		};
 	window.cb = $( "#combobox-tmpl-test" ).comboboxtmpl( settings );
 	$(window.cb).bind( 'comboboxtmplchange', function ( event, ui ) {
-		alert( ui.value() );
+		alert( 'value: ' + ui.value() );
 	} );
 });
 
 
 </script>
 
-Без плагина:
+Without plugin / Без плагина:
 <br />
-<select name="testname">
-	<option value="1" data-group="Программист">Кирилл</option>
-	<option value="2" data-group="Менеджер">Юра</option>
-	<option value="3" data-group="AnyKey-щик">Паша</option>
+<select id="combobox" name="testname" tabindex="3">
+	<option value="1" data-group="Programmer">Kirill</option>
+	<option value="2" data-group="Manager">Yura</option>
+	<option value="3" data-group="AnyKeyer">Jhon Smith</option>
+	<option value="4" data-group="Big baraboom">Mila</option>
 </select>
-<div id="a123"></div>
 <br />
 <br />
 <br />
 <p>
 $("#combobox-tmpl-test").comboboxtmpl( settings );<br/>
 $(window.cb).bind( 'comboboxtmplchange', function ( event, ui ) {<br/>
-	alert( ui.value() );<br/>
+	alert( 'value: ' + ui.value() );<br/>
 } );<br/>
 </p>
 <br />
 <select id="combobox-tmpl-test" name="testname" tabindex="3">
-	<option value="1" data-group="Программист">Кирилл</option>
-	<option value="2" data-group="Менеджер">Юра</option>
-	<option value="3" data-group="AnyKey-щик">Паша</option>
+	<option value="1" data-group="Programmer">Kirill</option>
+	<option value="2" data-group="Manager">Yura</option>
+	<option value="3" data-group="AnyKeyer">Jhon Smith</option>
+	<option value="4" data-group="Big baraboom">Mila</option>
 </select>
 
 </body>
