@@ -2,8 +2,8 @@
  * @author SowingSadness
  * @mail sowingsadness@gmail.com
  */
-
-( function( $, document ) {
+var $ = window.jQuery ? window.jQuery : {};
+//( function( $, document ) {
 
 	var arrKeyCodes = {
 		"tab"	: 9,
@@ -48,12 +48,13 @@
 	}
 
 	function shiftItemActivity( pluginObj, direction ) {
+		var selectShift, slectorShift;
 		if ( direction === 'next' ) {
-			var selectShift = function ( $activeItem ) { return $activeItem.nextAll( ':visible:first' ); }; //next not work
-			var slectorShift = ':visible:first';
+			selectShift = function ( $activeItem ) { return $activeItem.nextAll( ':visible:first' ); }; //next not work
+			slectorShift = ':visible:first';
 		} else {
-			var selectShift = function ( $activeItem ) { return $activeItem.prevAll( ':visible:first' ); };
-			var slectorShift = ':visible:last';
+			selectShift = function ( $activeItem ) { return $activeItem.prevAll( ':visible:first' ); };
+			slectorShift = ':visible:last';
 		}
 
 		var $activeItem = pluginObj.jobjects.itemList.children( '.active' );
@@ -80,13 +81,14 @@
 			'templateItem'	:	'<li data-value="${value}" data-filter="${name}">${name}</li>',
 			'width'			:	'241px',
 			'height'		:	'22px',
-			'tabindex'		:	false
+			'tabindex'		:	false,
+			'allowInput'	:	true
 		},
 		/**
 		 * jQuery.ui.widget::destroy()
 		 */
 		destroy: function() {
-			$.Widget.prototype.destroy.apply(this, arguments); // default destroy
+			//$.Widget.prototype.destroy.apply( this, arguments ); // default destroy
 			// now do other stuff particular to this widget
 		},
 		_keyHook: function ( event ) {
@@ -113,7 +115,6 @@
 						event.targetItem = null;
 					}
 					this.itemSelect( event );
-					this._itemListHide();
 					break;
 				case arrKeyCodes.tab:
 					//tab
@@ -131,6 +132,7 @@
 						return false; // отсекаю обработку левых действий при нажатии функц клавиш
 					}
 				}
+				return true;
 			} );
 		},
 		deactivateKeyHandlers: function () {
@@ -138,17 +140,18 @@
 			this.jobjects.enteredInput.unbind( 'keypress' );
 		},
 		_showEnteredField: function ( event ) {
-			this.jobjects.visibleInput.hide();
+			(! this.options.allowInput) && this.jobjects.enteredInput.attr( 'readonly', 'readonly' ) || this.jobjects.enteredInput.removeAttr( 'readonly', 'readonly' );
+			this.options.allowInput && this.jobjects.visibleInput.hide();
 			this.jobjects.enteredInput.show();
 			this.jobjects.enteredInput.focus();
 		},
 		_hideEnteredField: function ( event ) {
+			(! this.options.allowInput) && this.jobjects.enteredInput.attr( 'readonly', 'readonly' ) || this.jobjects.enteredInput.removeAttr( 'readonly', 'readonly' );
 			this.jobjects.enteredInput.blur();
 			this.jobjects.enteredInput.hide();
 			this.jobjects.visibleInput.show();
 		},
 		_itemListShow: function ( event ) {
-			this._showEnteredField( event );
 			this.jobjects.itemList.show();
 			this.listVisible = true;
 			$( document ).unbind( 'click' );
@@ -156,11 +159,18 @@
 			this._trigger( 'listshow', this );
 		},
 		_itemListHide: function ( event ) {
-			this._hideEnteredField( event );
 			this.jobjects.itemList.hide();
 			this.listVisible = false;
 
 			this._trigger( 'listhide', this );
+		},
+		comboboxClose: function ( event ) {
+			this._itemListHide( event );
+			this._hideEnteredField( event );
+		},
+		comboboxOpen: function ( event ) {
+			this._itemListShow( event );
+			this._showEnteredField( event );
 		},
 		comboboxFocus: function ( event ) {
 			var pluginObj = this;
@@ -168,9 +178,9 @@
 			this._trigger( 'focus', this );
 
 			if ( this.listVisible ) {
-				this._itemListHide();
+				this.comboboxClose( event );
 			} else {
-				this._itemListShow();
+				this.comboboxOpen( event );
 			}
 
 			// USE IN pluginObj as this
@@ -181,7 +191,7 @@
 		comboboxBlur: function ( event ) {
 			this._trigger( 'blur', this );
 
-			this._itemListHide();
+			this.comboboxClose();
 			$( document ).unbind( 'click' );
 		},
 		_comboboxClick: function ( event ) {
@@ -204,6 +214,10 @@
 			}
 		},
 		itemSelect: function ( event ) {
+			this._itemSelect( event );
+			this.comboboxClose();
+		},
+		_itemSelect: function ( event ) {
 			var $activeItem = (event.targetItem === undefined) ? $( event.currentTarget ) : $( event.targetItem );
 			if ( $activeItem.length === 0 ) {
 				return;
@@ -219,7 +233,6 @@
 			this._trigger( 'change', 0, this );
 		},
 		_itemClick: function ( event ) {
-			this._itemListHide();
 			this.itemSelect( event );
 
 			this._trigger( 'listclick', this );
@@ -282,12 +295,15 @@
 
 			var $comboBox	= $.tmpl( 'comboBoxTmpl', arrConfig );
 			var $enteredInput= $comboBox.find( 'input[name=entered_value]' );
+			if ( ! this.options.allowInput ) {
+				$enteredInput.attr( 'readonly', 'readonly' );
+			}
 			var $visibleInput= $comboBox.find( '.jqcmbx-input-visible' );
 			var $titleInput	= $comboBox.find( 'input.jqcmbx-input-title' );
 			var $valueInput	= $comboBox.find( 'input.jqcmbx-input-name' );
 			$comboBox.append( $itemList );
 
-			$enteredInput.bind( 'keyup', function( event ) { pluginObj._filterList( event ); } );
+			$comboBox.bind( 'keyup', function( event ) { pluginObj._filterList( event ); } );
 			$items.bind( 'click', function( event ) { pluginObj._itemClick( event ); } );
 			$comboBox.bind( 'click', function( event ) { pluginObj._comboboxClick( event ); } );
 			$select.replaceWith( $comboBox );
@@ -311,4 +327,4 @@
 	};
 
 	$.widget( "ui.comboboxtmpl", pluginObject );
-} )( jQuery, document );
+//} )( jQuery, document );

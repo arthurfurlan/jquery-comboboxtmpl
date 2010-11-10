@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="jquery.ui.core.min.js"></script>
 	<script type="text/javascript" src="jquery.ui.widget.min.js"></script>
 	<script type="text/javascript" src="jquery.tmpl.min.js"></script>
-	<script type="text/javascript" src="jquery.combobox.template.js"></script>
+	<script type="text/javascript" src="../dev/jquery.combobox.template.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<style type="text/css">
 		#demension_test {
@@ -31,7 +31,8 @@ $(function () {
 	var settings = {
 			'templateItem'	:	'<li data-value="${value}" data-filter="${name}" style="clear:left;"><a style="background:url(\'data:image/gif;base64,R0lGODlhDwAaAOZ/APr7/LnO3bXL2uK7Vvz58NLu9friZ/z69arD0tXl7eHr8uL1+tLv89v09921Uf3phfzjcMra5dvl68nX4ef1+fz589rt9e79/+v7/Ka+zs7h6tny9d3EmqjAz+rQc+ft8d/1+PTjttSycvb///f6+/vx0rzR3vL2+P/////4rub5+/3qjf/zlu/0+fH5/MmdQtLh7PfYWP3oe83a4u/jzdi9ke3Ma8aaSbvN2r/T4PXdfunXs+LGivHWh/jbWuT4+a7K2dy2X8qbO8PW4sTc6fjaX/bUU/fUXOr6+9+5Y9bx89u1V//ukOLz9v/2usfV3uTAZ/z369GmQv/yr9yyRNDr9c3r87+RPP/4pPjgbPHWfOfCW8ygQ/zsl+jMc+jKeN719vLZgPjdXPP//7nL19yzUP/wjdCtbvzmcuXIb///x9Ho8vjkou/WgJy3x/HUafznd/nlh9WmPLXQ3fv48t67XdDj7P3pgPnx4Mrd6fjcWtewW/fw3/z46+LCcwAAACH5BAEAAH8ALAAAAAAPABoAAAf/gH+Cgy0KLYOIiTAuMImOJBEoESSOiAoJIwkKjkMmAZ8UF00CpAI5gjkuIxhIKio/CyAYFAGCJwEJYz9gDRsNFxoCJ4MAESYgSgwMGwETAIkACAwFDQVWGc+JEnMFC3YLVUASjjhrFgg4CBZEZI4dGh0ffx8ZeW6OMzPZfwATT5WCSrApARBRDyc9CgrqY0ONjSgKQ4RJoSVEIgJfBmgcsIJFHAcgy/ghQADKlBRMVjy4IwMOBDNdghD4gydJGywyIBjYycLDHj6DDvCog0aMHh9ZlvCokKiClBg+IMQwIoSOox1Uijzw8OCInB2ORLzRwUXECx1bzghCMeiFlxs0EP7QuJHmiiMOHA4ErVFjUCAAOw==\') 0% 100% no-repeat;float:left;width:10px;height:13px;margin:8px 0px; padding: 0px 5px" />${name}<div class="group">${group}</div></li>',
 			'height'		:	'32px',
-			'tabindex'		:	5
+			'tabindex'		:	5,
+			'allowInput'	:	true
 		};
 	window.cb = $( "#combobox-tmpl-test" ).comboboxtmpl( settings );
 	$(window.cb).bind( 'comboboxtmplchange', function ( event, ui ) {
