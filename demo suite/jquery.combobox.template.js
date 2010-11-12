@@ -73,6 +73,19 @@ var $ = window.jQuery ? window.jQuery : {};
 		if ( $activeItem.length > 0 ) {
 			$activeItem.addClass( 'active' );
 		}
+		if ( pluginObj.options.maxVisibleItems ) {
+			var iItemHeight = $( pluginObj.jobjects.items[0] ).outerHeight();
+			var iViewYRange = pluginObj.options.maxVisibleItems * iItemHeight;
+			var iTopRange = pluginObj.jobjects.itemList.scrollTop();
+			var iDownRange = iViewYRange;
+			var iOffsetTop = $activeItem.position().top;
+			var iCurrentScrollTop = pluginObj.jobjects.itemList.scrollTop();
+			if ( iOffsetTop < 0 ) {
+				pluginObj.jobjects.itemList.scrollTop( iCurrentScrollTop + iOffsetTop );
+			} else if ( iOffsetTop >= iDownRange ) {
+				pluginObj.jobjects.itemList.scrollTop( iCurrentScrollTop + iOffsetTop - iDownRange + iItemHeight );
+			}
+		}
 	}
 
 	pluginObject = {
@@ -82,7 +95,8 @@ var $ = window.jQuery ? window.jQuery : {};
 			'width'			:	'241px',
 			'height'		:	'22px',
 			'tabindex'		:	false,
-			'allowInput'	:	true
+			'allowInput'	:	true,
+			'maxVisibleItems' : 8
 		},
 		/**
 		 * jQuery.ui.widget::destroy()
@@ -153,6 +167,11 @@ var $ = window.jQuery ? window.jQuery : {};
 		},
 		_itemListShow: function ( event ) {
 			this.jobjects.itemList.show();
+
+			var iItemHeight = $( this.jobjects.items[0] ).outerHeight();
+			var iItemListHeight = this.jobjects.items.length ? this.options.maxVisibleItems*iItemHeight+'px' : 'auto';
+			this.jobjects.itemList.css( 'height', iItemListHeight );
+
 			this.listVisible = true;
 			$( document ).unbind( 'click' );
 
@@ -256,14 +275,14 @@ var $ = window.jQuery ? window.jQuery : {};
 
 			var sStyle = ' .jqcmbx {width:' + this.options.width + ';position:relative;font:.8em Arial, Verdana, serf;} ' +
 			' .jqcmbx-input {position: relative;} .jqcmbx-input-border {position:relative;width:100%;height:' + this.options.height + ';border:1px solid #abadb3;cursor:default;}' +
-			' .jqcmbx-input>.jqcmbx-input-visible {width:100%;height:100%;}' +
-			' .jqcmbx-input>.input-size {position:absolute;left:0px;right:21px;z-index:2;}' +
-			' .jqcmbx-input>.input-size>input {width:100%;border:none;background:transparent;}' +
-			' .jqcmbx-input>span {position:absolute;right:1px;top:1px;height:20px;width:14px;z-index:2;background:url("img/jqcmbx-arrow.png")}' +
-			' .jqcmbx-input>span:hover {background-position: 0 40px;}' +
-			' .jqcmbx-input>span:active {background-position: 0 20px;}' +
-			' .jqcmbx-ul {list-style-position:inside;list-style-type:none;font-size:1em;background:white;border:1px solid black;display:none;position:absolute;margin:0px;padding:0px;width:100%;}' +
-			' .jqcmbx-li {margin:0px; padding:0px 0px 0px 5px;height:' + this.options.height + ';cursor:default;} ' +
+			' .jqcmbx-input .jqcmbx-input-visible {width:100%;height:100%;}' +
+			' .jqcmbx-input .input-size {position:absolute;left:0px;right:21px;z-index:2;}' +
+			' .jqcmbx-input .input-size input {width:100%;border:none;background:transparent;}' +
+			' .jqcmbx-input span {position:absolute;right:1px;top:1px;height:20px;width:14px;z-index:2;background:url("img/jqcmbx-arrow.png")}' +
+			' .jqcmbx-input span:hover {background-position: 0 40px;}' +
+			' .jqcmbx-input span:active {background-position: 0 20px;}' +
+			' .jqcmbx-ul {list-style-position:inside;list-style-type:none;font-size:1em;background:white;border:1px solid black;display:none;position:absolute;margin:0px;padding:0px;width:100%;overflow-y:auto;}' +
+			' .jqcmbx-li {position:relative;margin:0px; padding:0px 0px 0px 5px;height:' + this.options.height + ';cursor:default;} ' +
 			' .jqcmbx-li:hover, .jqcmbx-li.active {background:#3399ff;color:white;}';
 			$( 'head' ).prepend( '<style>' + sStyle + '</style>' );
 
