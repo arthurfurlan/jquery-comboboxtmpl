@@ -2,8 +2,7 @@
  * @author SowingSadness
  * @mail sowingsadness@gmail.com
  */
-var $ = window.jQuery ? window.jQuery : {};
-//( function( $, document ) {
+( function( $, document ) {
 
 	var arrKeyCodes = {
 		"tab"	: 9,
@@ -346,4 +345,4 @@ var $ = window.jQuery ? window.jQuery : {};
 	};
 
 	$.widget( "ui.comboboxtmpl", pluginObject );
-//} )( jQuery, document );
+} )( jQuery, document );
