@@ -174,13 +174,13 @@
 			this.listVisible = true;
 			$( document ).unbind( 'click' );
 
-			this._trigger( 'listshow', this );
+			this._trigger( 'listshow', 0, 0, this );
 		},
 		_itemListHide: function ( event ) {
 			this.jobjects.itemList.hide();
 			this.listVisible = false;
 
-			this._trigger( 'listhide', this );
+			this._trigger( 'listhide', 0, 0, this );
 		},
 		comboboxClose: function ( event ) {
 			this._itemListHide( event );
@@ -193,7 +193,7 @@
 		comboboxFocus: function ( event ) {
 			var pluginObj = this;
 
-			this._trigger( 'focus', this );
+			this._trigger( 'focus', 0, this );
 
 			if ( this.listVisible ) {
 				this.comboboxClose( event );
@@ -207,13 +207,13 @@
 			} );
 		},
 		comboboxBlur: function ( event ) {
-			this._trigger( 'blur', this );
+			this._trigger( 'blur', 0, this );
 
 			this.comboboxClose();
 			$( document ).unbind( 'click' );
 		},
 		_comboboxClick: function ( event ) {
-			this._trigger( 'click', this );
+			this._trigger( 'click', 0, this );
 
 			this.comboboxFocus( event );
 			event.stopPropagation();
@@ -253,8 +253,8 @@
 		_itemClick: function ( event ) {
 			this.itemSelect( event );
 
-			this._trigger( 'listclick', this );
-			this._trigger( 'click', this );
+			this._trigger( 'listclick', 0, this );
+			this._trigger( 'click', 0, this );
 
 			event.stopPropagation();
 		},
