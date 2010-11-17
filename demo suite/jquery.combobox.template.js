@@ -2,7 +2,7 @@
  * @author SowingSadness
  * @mail sowingsadness@gmail.com
  */
-( function( $, document ) {
+( function( $, document, undefined ) {
 
 	var arrKeyCodes = {
 		"tab"	: 9,
@@ -17,7 +17,7 @@
 		var prefix = 'data-';
 		var oAttrsData = {};
 		var sAttrs = $Object[0].attributes;
-		if ( typeof sAttrs !== 'undefined' ) {
+		if ( sAttrs !== undefined ) {
 			for ( var i=0; i < sAttrs.length; i++ ) {
 				if ( sAttrs[i].name.substr( 0, prefix.length ).toLowerCase() === prefix ) {
 					var sAttrName = sAttrs[i].name.substr( prefix.length );
@@ -127,7 +127,7 @@
 					} else {
 						event.targetItem = null;
 					}
-					this.itemSelect( event );
+					this._itemSelect( event );
 					break;
 				case arrKeyCodes.tab:
 					//tab
@@ -231,11 +231,11 @@
 				}
 			}
 		},
-		itemSelect: function ( event ) {
-			this._itemSelect( event );
+		_itemSelect: function ( event ) {
+			this.itemSelect( event );
 			this.comboboxClose();
 		},
-		_itemSelect: function ( event ) {
+		itemSelect: function ( event ) {
 			var $activeItem = (event.targetItem === undefined) ? $( event.currentTarget ) : $( event.targetItem );
 			if ( $activeItem.length === 0 ) {
 				return;
@@ -250,8 +250,14 @@
 
 			this._trigger( 'change', 0, this );
 		},
+		select: function ( dataValue ) {
+			var $activeItem = this.jobjects.items.next( '[data-value='+dataValue+']' );
+			if ( $activeItem.length > 0) {
+				this.itemSelect( {targetItem: $activeItem[0]} );
+			}
+		},
 		_itemClick: function ( event ) {
-			this.itemSelect( event );
+			this._itemSelect( event );
 
 			this._trigger( 'listclick', 0, this );
 			this._trigger( 'click', 0, this );
@@ -288,7 +294,14 @@
 			var $select = $( this.options.target );
 			this.element = $select;
 			var $source = $( this.options.source );
-			var $items = $select.children();
+			var $items = $select.children( 'option' );
+			/* Selected Item */
+			var selectedItem = $select.children( 'option[selected]' );
+			var selectedValue = selectedItem.val();
+			var selectedDataVal = selectedItem.attr( 'data-value' );
+			if ( selectedDataVal === undefined ) {
+				selectedDataVal = selectedValue;
+			}
 
 			var arrConfig = {};
 			arrConfig.id		=	$source.attr( 'id' );
@@ -298,7 +311,7 @@
 			arrConfig.tabindex	= 	(this.options.tabindex === true) ? (function() { return ti ? 'tabindex='+ti : '';})() : (function() {return (pluginObj.options.tabindex === false) ? '' : 'tabindex='+pluginObj.options.tabindex;})();
 
 			$.template( 'comboBoxTmpl', '<div id="${id}" class="jqcmbx"><div class="jqcmbx-input">' +
-					'<div class="input-size"><input name="entered_value" type="text" ${tabindex} /></div>' +
+					'<div class="input-size"><input name="jqcmbx_entered_value" type="text" ${tabindex} /></div>' +
 					'<div class="jqcmbx-input-border"><div class="jqcmbx-input-visible"></div></div>' +
 					'<input name="${titlename}" class="jqcmbx-input-title" type="hidden"/><input name="${name}" class="jqcmbx-input-name" type="hidden"/>' +
 					'<span />' +
@@ -312,7 +325,7 @@
 			$items.appendTo( $itemList );
 
 			var $comboBox	= $.tmpl( 'comboBoxTmpl', arrConfig );
-			var $enteredInput= $comboBox.find( 'input[name=entered_value]' );
+			var $enteredInput= $comboBox.find( 'input[name=jqcmbx_entered_value]' );
 			if ( ! this.options.allowInput ) {
 				$enteredInput.attr( 'readonly', 'readonly' );
 			}
@@ -335,6 +348,8 @@
 					itemList	: $itemList,
 					items		: $items
 			};
+
+			this.select( selectedDataVal );
 
 			this.activateKeyHandlers();
 		},
