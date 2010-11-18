@@ -175,13 +175,13 @@ var $ = window.jQuery ? window.jQuery : {};
 			this.listVisible = true;
 			$( document ).unbind( 'click' );
 
-			this._trigger( 'listshow', 0, 0, this );
+			this._trigger( 'listshow', 0, this );
 		},
 		_itemListHide: function ( event ) {
 			this.jobjects.itemList.hide();
 			this.listVisible = false;
 
-			this._trigger( 'listhide', 0, 0, this );
+			this._trigger( 'listhide', 0, this );
 		},
 		comboboxClose: function ( event ) {
 			this._itemListHide( event );
