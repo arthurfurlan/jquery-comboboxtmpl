@@ -278,7 +278,7 @@ var $ = window.jQuery ? window.jQuery : {};
 			this._trigger( 'change', 0, this );
 		},
 		select: function ( dataValue ) {
-			var $activeItem = this.jobjects.items.next( '[data-value='+dataValue+']' );
+			var $activeItem = this.jobjects.itemList.children( '[data-value='+dataValue+']:first' );
 			if ( $activeItem.length > 0) {
 				this.itemSelect( {targetItem: $activeItem[0]} );
 			}
@@ -310,9 +310,9 @@ var $ = window.jQuery ? window.jQuery : {};
 			' .jqcmbx-input .jqcmbx-input-visible {width:100%;height:100%;}' +
 			' .jqcmbx-input .input-size {position:absolute;left:0px;right:21px;z-index:2;}' +
 			' .jqcmbx-input .input-size input {width:100%;border:none;background:transparent;}' +
-			' .jqcmbx-input span {position:absolute;right:-1px;top:1px;height:20px;width:14px;z-index:2;background:url("img/jqcmbx-arrow.png")}' +
-			' .jqcmbx-input span:hover {background-position: 0 40px;}' +
-			' .jqcmbx-input span:active {background-position: 0 20px;}' +
+			' .jqcmbx-input span.jqcmbx-opener {position:absolute;right:-1px;top:1px;height:20px;width:14px;z-index:2;background:url("img/jqcmbx-arrow.png")}' +
+			' .jqcmbx-input span.jqcmbx-opener:hover {background-position: 0 40px;}' +
+			' .jqcmbx-input span.jqcmbx-opener:active {background-position: 0 20px;}' +
 			' .jqcmbx-ul {list-style-position:inside;list-style-type:none;font-size:1em;background:white;border:1px solid black;display:none;position:absolute;margin:0px;padding:0px;width:100%;overflow-y:auto;}' +
 			' .jqcmbx-li {position:relative;margin:0px; padding:0px 0px 0px 5px;height:' + this.options.height + ';cursor:default;} ' +
 			' .jqcmbx-li:hover, .jqcmbx-li.active {background:#3399ff;color:white;}';
@@ -341,7 +341,7 @@ var $ = window.jQuery ? window.jQuery : {};
 					'<div class="input-size"><input name="jqcmbx_entered_value" type="text" ${tabindex} /></div>' +
 					'<div class="jqcmbx-input-border"><div class="jqcmbx-input-visible"></div></div>' +
 					'<input name="${titlename}" class="jqcmbx-input-title" type="hidden"/><input name="${name}" class="jqcmbx-input-name" type="hidden"/>' +
-					'<span />' +
+					'<span class="jqcmbx-opener" />' +
 					'</div></div>' );
 			$.template( 'optionTmpl', this.options.templateItem );
 			$.template( 'optGroupTmpl', this.options.templateItem );
