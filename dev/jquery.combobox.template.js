@@ -73,22 +73,9 @@ var $ = window.jQuery ? window.jQuery : {};
 		if ( $activeItem.length > 0 ) {
 			$activeItem.addClass( 'active' );
 		}
-		if ( pluginObj.options.maxVisibleItems ) {
-			var iItemHeight = $( pluginObj.jobjects.items[0] ).outerHeight();
-			var iViewYRange = pluginObj.options.maxVisibleItems * iItemHeight;
-			var iTopRange = pluginObj.jobjects.itemList.scrollTop();
-			var iDownRange = iViewYRange;
-			var iOffsetTop = $activeItem.position().top;
-			var iCurrentScrollTop = pluginObj.jobjects.itemList.scrollTop();
-			if ( iOffsetTop < 0 ) {
-				pluginObj.jobjects.itemList.scrollTop( iCurrentScrollTop + iOffsetTop );
-			} else if ( iOffsetTop >= iDownRange ) {
-				pluginObj.jobjects.itemList.scrollTop( iCurrentScrollTop + iOffsetTop - iDownRange + iItemHeight );
-			}
-		}
 	}
 
-	pluginObject = {
+	var pluginObject = {
 		options: {
 			'templateList'	:	'<ul></ul>',
 			'templateItem'	:	'<li data-value="${value}" data-filter="${name}">${name}</li>',
@@ -116,10 +103,12 @@ var $ = window.jQuery ? window.jQuery : {};
 				case arrKeyCodes.down:
 					//вниз
 					shiftItemActivity( this, 'next' );
+					this._reposScrollArea( event );
 					break;
 				case arrKeyCodes.up:
 					//вверх
 					shiftItemActivity( this, 'prev' );
+					this._reposScrollArea( event );
 					break;
 				case arrKeyCodes.enter:
 					var $activeItem = this.jobjects.itemList.children('.active');
@@ -165,12 +154,42 @@ var $ = window.jQuery ? window.jQuery : {};
 			this.jobjects.enteredInput.hide();
 			this.jobjects.visibleInput.show();
 		},
+		_reposScrollArea: function ( event ) {
+			if ( this.options.maxVisibleItems ) {
+				var $activeItem = this.jobjects.itemList.children( '.active' );
+				if ( $activeItem.length === 0 ) {
+					$activeItem = this.jobjects.itemList.children( ':visible:first' );
+					if ( $activeItem.length === 0 ) {
+						return;
+					}
+				}
+
+				var iItemHeight = $( this.jobjects.items[0] ).outerHeight();
+				var iViewYRange = this.options.maxVisibleItems * iItemHeight;
+				var iTopRange = this.jobjects.itemList.scrollTop();
+				var iDownRange = iViewYRange;
+				var iOffsetTop = $activeItem.position().top;
+				if ( iOffsetTop < 0 ) {
+					this.jobjects.itemList.scrollTop( iTopRange + iOffsetTop );
+				} else if ( iOffsetTop >= iDownRange ) {
+					this.jobjects.itemList.scrollTop( iTopRange + iOffsetTop - iDownRange + iItemHeight );
+				}
+			}
+		},
+		_resizeItemsList: function ( event ) {
+			var iItemHeight = $( this.jobjects.items[0] ).outerHeight();
+			var iCurrentMaxHeight = iItemHeight * this.jobjects.itemList.children( ':visible' ).length;
+			var iItemListHeight = this.jobjects.items.length ? (this.options.maxVisibleItems * iItemHeight) : iCurrentMaxHeight;
+			if ( iItemListHeight > iCurrentMaxHeight ) {
+				iItemListHeight = iCurrentMaxHeight;
+			}
+			var sItemListHeight = iItemListHeight + 'px';
+			this.jobjects.itemList.css( 'height', sItemListHeight );
+		},
 		_itemListShow: function ( event ) {
 			this.jobjects.itemList.show();
 
-			var iItemHeight = $( this.jobjects.items[0] ).outerHeight();
-			var iItemListHeight = this.jobjects.items.length ? this.options.maxVisibleItems*iItemHeight+'px' : 'auto';
-			this.jobjects.itemList.css( 'height', iItemListHeight );
+			this._resizeItemsList( event );
 
 			this.listVisible = true;
 			$( document ).unbind( 'click' );
@@ -231,6 +250,11 @@ var $ = window.jQuery ? window.jQuery : {};
 					$item.show();
 				}
 			}
+			var $activeItem = this.jobjects.itemList.children( '.active:visible' );
+			if ( $activeItem.length === 0 ) {
+				this.jobjects.itemList.children().removeClass( 'active' );
+			}
+			this._resizeItemsList( event );
 		},
 		_itemSelect: function ( event ) {
 			this.itemSelect( event );
@@ -238,15 +262,17 @@ var $ = window.jQuery ? window.jQuery : {};
 		},
 		itemSelect: function ( event ) {
 			var $activeItem = (event.targetItem === undefined) ? $( event.currentTarget ) : $( event.targetItem );
+
+			this.jobjects.itemList.children().removeClass( 'active' );
 			if ( $activeItem.length === 0 ) {
 				return;
 			}
+
 			var value = $activeItem.attr( 'data-value' );
 			this.jobjects.visibleInput.html( $activeItem.html() );
 			this.jobjects.titleInput.val( $activeItem.text() );
 			this.jobjects.valueInput.val( value );
 
-			this.jobjects.itemList.children().removeClass( 'active' );
 			$activeItem.addClass( 'active' );
 
 			this._trigger( 'change', 0, this );
@@ -284,7 +310,7 @@ var $ = window.jQuery ? window.jQuery : {};
 			' .jqcmbx-input .jqcmbx-input-visible {width:100%;height:100%;}' +
 			' .jqcmbx-input .input-size {position:absolute;left:0px;right:21px;z-index:2;}' +
 			' .jqcmbx-input .input-size input {width:100%;border:none;background:transparent;}' +
-			' .jqcmbx-input span {position:absolute;right:1px;top:1px;height:20px;width:14px;z-index:2;background:url("img/jqcmbx-arrow.png")}' +
+			' .jqcmbx-input span {position:absolute;right:-1px;top:1px;height:20px;width:14px;z-index:2;background:url("img/jqcmbx-arrow.png")}' +
 			' .jqcmbx-input span:hover {background-position: 0 40px;}' +
 			' .jqcmbx-input span:active {background-position: 0 20px;}' +
 			' .jqcmbx-ul {list-style-position:inside;list-style-type:none;font-size:1em;background:white;border:1px solid black;display:none;position:absolute;margin:0px;padding:0px;width:100%;overflow-y:auto;}' +
