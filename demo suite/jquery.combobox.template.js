@@ -267,6 +267,8 @@
 				return;
 			}
 
+			this.jobjects.activeItem = $activeItem;
+
 			var value = $activeItem.attr( 'data-value' );
 			this.jobjects.visibleInput.html( $activeItem.html() );
 			this.jobjects.titleInput.val( $activeItem.text() );
@@ -274,7 +276,7 @@
 
 			$activeItem.addClass( 'active' );
 
-			this._trigger( 'change', 0, this );
+			this._trigger( 'change', 0, $activeItem );
 		},
 		select: function ( dataValue ) {
 			var $activeItem = this.jobjects.itemList.children( '[data-value='+dataValue+']:first' );
@@ -372,7 +374,8 @@
 					titleInput	: $titleInput,
 					valueInput	: $valueInput,
 					itemList	: $itemList,
-					items		: $items
+					items		: $items,
+					activeItem  : undefined
 			};
 
 			this.select( selectedDataVal );

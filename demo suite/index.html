@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="jquery.ui.core.min.js"></script>
 	<script type="text/javascript" src="jquery.ui.widget.min.js"></script>
 	<script type="text/javascript" src="jquery.tmpl.min.js"></script>
-	<script type="text/javascript" src="../dev/jquery.combobox.template.js"></script>
+	<script type="text/javascript" src="/jquery.combobox.template.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<style type="text/css">
 		#demension_test {
@@ -37,7 +37,7 @@ $(function () {
 		};
 	window.cb = $( "#combobox-tmpl-test" ).comboboxtmpl( settings );
 	$(window.cb).bind( 'comboboxtmplchange', function ( event, ui ) {
-		alert( 'value: ' + ui.value() );
+		alert( 'value: ' + $( ui ).attr( 'data-value' ) );
 	} );
 	window.cb.comboboxtmpl( 'select', 12 );
 });
@@ -63,10 +63,11 @@ Without plugin / Без плагина:
 <br />
 <br />
 <p>
-window.cb = $("#combobox-tmpl-test").comboboxtmpl( settings );<br/>
-$(window.cb).bind( 'comboboxtmplchange', function ( event, ui ) {<br/>
-	alert( 'value: ' + ui.value() );<br/>
-} );<br/>
+window.cb = $( "#combobox-tmpl-test" ).comboboxtmpl( settings );
+	$(window.cb).bind( 'comboboxtmplchange', function ( event, ui ) {
+		alert( 'value: ' + $( ui ).attr( 'data-value' ) );
+	} );
+<br/>
 </p>
 <br />
 <select id="combobox-tmpl-test" name="testname" tabindex="3">

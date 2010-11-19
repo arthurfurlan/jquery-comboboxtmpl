@@ -268,6 +268,8 @@ var $ = window.jQuery ? window.jQuery : {};
 				return;
 			}
 
+			this.jobjects.activeItem = $activeItem;
+
 			var value = $activeItem.attr( 'data-value' );
 			this.jobjects.visibleInput.html( $activeItem.html() );
 			this.jobjects.titleInput.val( $activeItem.text() );
@@ -275,7 +277,7 @@ var $ = window.jQuery ? window.jQuery : {};
 
 			$activeItem.addClass( 'active' );
 
-			this._trigger( 'change', 0, this );
+			this._trigger( 'change', 0, $activeItem );
 		},
 		select: function ( dataValue ) {
 			var $activeItem = this.jobjects.itemList.children( '[data-value='+dataValue+']:first' );
@@ -373,7 +375,8 @@ var $ = window.jQuery ? window.jQuery : {};
 					titleInput	: $titleInput,
 					valueInput	: $valueInput,
 					itemList	: $itemList,
-					items		: $items
+					items		: $items,
+					activeItem  : undefined
 			};
 
 			this.select( selectedDataVal );
