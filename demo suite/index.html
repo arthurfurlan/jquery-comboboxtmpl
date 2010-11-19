@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="jquery.ui.core.min.js"></script>
 	<script type="text/javascript" src="jquery.ui.widget.min.js"></script>
 	<script type="text/javascript" src="jquery.tmpl.min.js"></script>
-	<script type="text/javascript" src="/jquery.combobox.template.js"></script>
+	<script type="text/javascript" src="jquery.combobox.template.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<style type="text/css">
 		#demension_test {
@@ -33,7 +33,7 @@ $(function () {
 			'height'		:	'32px',
 			'tabindex'		:	5,
 			'allowInput'	:	true,
-			'maxVisibleItems': 5
+			'maxVisibleItems': 6
 		};
 	window.cb = $( "#combobox-tmpl-test" ).comboboxtmpl( settings );
 	$(window.cb).bind( 'comboboxtmplchange', function ( event, ui ) {
@@ -48,12 +48,12 @@ $(function () {
 Without plugin / Без плагина:
 <br />
 <select id="combobox" name="testname" tabindex="3">
-	<option value="1" data-group="Programmer">Kirill</option>
+	<option value="1" data-group="Programmer">Кирилл</option>
 	<option value="2" data-group="Manager">Yura</option>
 	<option value="3" data-group="AnyKeyer">Jhon Smith</option>
 	<option value="4" data-group="Big baraboom" selected="selected">Mila</option>
-	<option value="5" data-group="Green">Tree</option>
-	<option value="6" data-group="Color">Red</option>
+	<option value="5" data-group="Green">Илья</option>
+	<option value="6" data-group="Color">Вася</option>
 	<option value="7" data-group="Town">Kazan</option>
 	<option value="8" data-group="City">Moscow</option>
 	<option value="9" data-group="Black Gems">Jack Sparrow</option>
@@ -71,12 +71,12 @@ window.cb = $( "#combobox-tmpl-test" ).comboboxtmpl( settings );
 </p>
 <br />
 <select id="combobox-tmpl-test" name="testname" tabindex="3">
-	<option value="1" data-group="Programmer">Kirill</option>
+	<option value="1" data-group="Programmer">Кирилл</option>
 	<option value="2" data-group="Manager">Yura</option>
 	<option value="3" data-group="AnyKeyer">Jhon Smith</option>
 	<option value="4" data-group="Big baraboom" selected="selected">Mila</option>
-	<option value="5" data-group="Green">Tree</option>
-	<option value="6" data-group="Color">Red</option>
+	<option value="5" data-group="Green">Илья</option>
+	<option value="6" data-group="Color">Вася</option>
 	<option value="7" data-group="Town">Kazan</option>
 	<option value="8" data-group="City">Moscow</option>
 	<option value="9" data-group="Black Gems">Jack Sparrow</option>
