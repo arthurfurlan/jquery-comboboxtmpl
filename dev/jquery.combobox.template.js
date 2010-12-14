@@ -356,7 +356,7 @@ var $ = window.jQuery ? window.jQuery : {};
 			var $comboBox	= $.tmpl( 'comboBoxTmpl', arrConfig );
 			var $enteredInput= $comboBox.find( 'input[name=jqcmbx_entered_value]' );
 			if ( ! this.options.allowInput ) {
-				$enteredInput.attr( 'readonly', 'readonly' );
+				$enteredInput.remove();
 			}
 			var $visibleInput= $comboBox.find( '.jqcmbx-input-visible' );
 			var $titleInput	= $comboBox.find( 'input.jqcmbx-input-title' );
