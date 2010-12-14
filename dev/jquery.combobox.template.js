@@ -312,7 +312,7 @@ var $ = window.jQuery ? window.jQuery : {};
 			' .jqcmbx-input .jqcmbx-input-visible {width:100%;height:100%;}' +
 			' .jqcmbx-input .input-size {position:absolute;left:0px;right:21px;z-index:2;}' +
 			' .jqcmbx-input .input-size input {width:100%;border:none;background:transparent;}' +
-			' .jqcmbx-input span.jqcmbx-opener {position:absolute;right:-1px;top:1px;height:20px;width:14px;z-index:2;background:url("img/jqcmbx-arrow.png")}' +
+			' .jqcmbx-input span.jqcmbx-opener {position:absolute;right:-1px;top:1px;height:20px;width:14px;z-index:2}' +
 			' .jqcmbx-input span.jqcmbx-opener:hover {background-position: 0 40px;}' +
 			' .jqcmbx-input span.jqcmbx-opener:active {background-position: 0 20px;}' +
 			' .jqcmbx-ul {list-style-position:inside;list-style-type:none;font-size:1em;background:white;border:1px solid black;display:none;position:absolute;margin:0px;padding:0px;width:100%;overflow-y:auto;}' +
